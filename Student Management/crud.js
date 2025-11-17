@@ -13,37 +13,48 @@ closeBtn.addEventListener("click", () => {
 
 const table = document.querySelector("table");
 
+
 // Form Submit
 form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    // Use of DOM to get the value from the HTML
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const age = document.getElementById("age").value;
-    const grid = document.getElementById("grid").value;
-    const gender = document.getElementById("gender").value;
-    const course = document.getElementById("course").value;
-    const department = document.getElementById("department").value;
-    const contact = document.getElementById("contact").value;
+    const studentData = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        age: document.getElementById("age").value,
+        grid: document.getElementById("grid").value,
+        gender: document.getElementById("gender").value,
+        course: document.getElementById("course").value,
+        department: document.getElementById("department").value,
+        contact: document.getElementById("contact").value
+    };
 
-    // Create table row
-    const row = document.createElement("tr");
+    // Save to db.json using json-server
+    fetch("http://localhost:3000/students", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(studentData)
+    })
+        .then(res => res.json())
+        .then(data => console.log("Saved:", data));
+
+    // Create HTML table row
+    const row = document.createElement("tr");   
     row.innerHTML = `
-    <td class="px-6 py-4"><input type="checkbox"></td>
-    <td class="px-6 py-4 text-sm text-gray-800">${name}</td>
-    <td class="px-6 py-4 text-sm text-gray-600">${email}</td>
-    <td class="px-6 py-4 text-sm text-gray-600">${age}</td>
-    <td class="px-6 py-4 text-sm text-gray-600">${grid}</td>
-    <td class="px-6 py-4 text-sm text-gray-600">${gender}</td>
-    <td class="px-6 py-4 text-sm text-gray-600">${course}</td>
-    <td class="px-6 py-4 text-sm text-gray-600">${department}</td>
-    <td class="px-6 py-4 text-sm text-gray-600">${contact}</td>
-    <td class="px-6 py-4 text-right text-sm text-gray-600">
-        <button class="edit-btn text-blue-600 hover:underline">Edit</button>
-        <button class="delete-btn text-red-600 hover:underline ml-2">Delete</button>
-    </td>
-`;
+        <td class="px-6 py-4"><input type="checkbox"></td>
+        <td class="px-6 py-4 text-sm text-gray-800">${studentData.name}</td>
+        <td class="px-6 py-4 text-sm text-gray-600">${studentData.email}</td>
+        <td class="px-6 py-4 text-sm text-gray-600">${studentData.age}</td>
+        <td class="px-6 py-4 text-sm text-gray-600">${studentData.grid}</td>
+        <td class="px-6 py-4 text-sm text-gray-600">${studentData.gender}</td>
+        <td class="px-6 py-4 text-sm text-gray-600">${studentData.course}</td>
+        <td class="px-6 py-4 text-sm text-gray-600">${studentData.department}</td>
+        <td class="px-6 py-4 text-sm text-gray-600">${studentData.contact}</td>
+        <td class="px-6 py-4 text-right text-sm text-gray-600">
+            <button class="edit-btn text-blue-600 hover:underline">Edit</button>
+            <button class="delete-btn text-red-600 hover:underline ml-2">Delete</button>
+        </td>
+    `;
 
     table.appendChild(row);
 
@@ -62,4 +73,3 @@ document.addEventListener("click", function (e) {
         }
     }
 });
-
